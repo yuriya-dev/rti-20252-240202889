@@ -50,7 +50,7 @@ Mata kuliah ini menggunakan pendekatan **Positivist** (fenomena TI bisa diukur o
 
 ---
 
-## Template A.1 — Research Mindset Self-Assessment
+## A.1 — Research Mindset Self-Assessment
 
 ```
 Nama Peneliti    : Wahyu Tri Cahya
