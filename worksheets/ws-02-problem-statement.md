@@ -61,7 +61,7 @@ Masalah riset yang layak harus memenuhi 5 kriteria:
 
 ---
 
-## Template A.2 — Problem Statement Builder
+## A.2 — Problem Statement Builder
 
 ```
 PROBLEM STATEMENT BUILDER
