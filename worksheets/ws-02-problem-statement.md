@@ -67,33 +67,33 @@ Masalah riset yang layak harus memenuhi 5 kriteria:
 PROBLEM STATEMENT BUILDER
 
 Domain & Konteks
-  Domain   : ____________________
-  Konteks  : ____________________
+  Domain   : Manajemen Sumber Daya Manusia (MSDM) berbasis data
+  Konteks  : Implementasi machine learning untuk rekrutmen dan prediksi turnover pada organisasi di Indonesia
 
 System Context
-  Input       : ____________________
-  Process     : ____________________
-  Output      : ____________________
-  Outcome     : ____________________
-  Constraints : ____________________
-  Stakeholders: ____________________
+  Input       : Data CV kandidat, riwayat kinerja karyawan, absensi, data resign, dan kebijakan HR
+  Process     : Integrasi data HR, preprocessing, pelatihan model ML, evaluasi akurasi-fairness, dan rekomendasi keputusan HR
+  Output      : Skor kecocokan kandidat, prediksi risiko turnover, dan rekomendasi pelatihan/retensi
+  Outcome     : Proses HR lebih cepat, keputusan lebih akurat, dan retensi karyawan meningkat
+  Constraints : Kualitas data rendah/tidak terstruktur, privasi-keamanan data, bias algoritma, biaya implementasi, dan resistensi budaya
+  Stakeholders: Tim HRD, manajer lini, kandidat dan karyawan, tim IT/data, serta manajemen puncak
 
 Fenomena → Problem
-  Fenomena yang diamati             : ____________________
-  Gejala (symptom) yang terukur     : ____________________
-  Masalah yang didiagnosis          : ____________________
-  Masalah riset (researchable)      : ____________________
-  Variabel yang terukur             : ____________________
+  Fenomena yang diamati             : Adopsi ML di MSDM meningkat karena dorongan efisiensi dan kebutuhan keputusan strategis
+  Gejala (symptom) yang terukur     : Screening CV dan analisis turnover memakan waktu lama, akurasi keputusan HR belum konsisten, serta risiko bias/privasi sering dilaporkan
+  Masalah yang didiagnosis          : Data HR belum siap analitik (tersebar dan tidak konsisten) serta belum ada evaluasi terpadu untuk kinerja model dan risiko etis
+  Masalah riset (researchable)      : Belum jelas seberapa besar ML meningkatkan akurasi prediksi turnover/rekrutmen pada konteks MSDM Indonesia tanpa memperburuk bias dan risiko privasi
+  Variabel yang terukur             : F1-score/AUC model, time-to-screening CV, tingkat turnover, demographic parity difference, dan jumlah insiden kepatuhan privasi
 
 Problem Quality Check
-  [ ] Clarity — Apakah satu orang membaca akan paham?
-  [ ] Measurability — Apakah ada metrik kuantitatif?
-  [ ] Relevance — Apakah penting untuk domain?
-  [ ] Testability — Apakah bisa gagal?
-  [ ] Impact — Apakah ada kontribusi jika terjawab?
+  [x] Clarity — Apakah satu orang membaca akan paham?
+  [x] Measurability — Apakah ada metrik kuantitatif?
+  [x] Relevance — Apakah penting untuk domain?
+  [x] Testability — Apakah bisa gagal?
+  [x] Impact — Apakah ada kontribusi jika terjawab?
 
 Problem Statement (1 paragraf):
-  ____________________
+  Berdasarkan temuan literatur pada implementasi machine learning di bidang MSDM, organisasi membutuhkan proses rekrutmen dan retensi yang lebih cepat serta akurat, namun masih menghadapi kendala kualitas data HR, bias algoritma, dan risiko privasi. Masalah riset yang dirumuskan adalah belum tersedianya evaluasi terukur pada konteks MSDM Indonesia untuk membuktikan apakah model machine learning benar-benar meningkatkan kualitas keputusan HR (misalnya prediksi turnover dan seleksi kandidat) sekaligus tetap adil dan patuh privasi. Oleh karena itu, penelitian perlu menguji kinerja model melalui metrik akurasi (F1/AUC), efisiensi proses (time-to-screening), serta metrik fairness dan kepatuhan data agar kontribusinya valid secara teknis dan etis.
 ```
 
 ---
@@ -102,18 +102,18 @@ Problem Statement (1 paragraf):
 
 Pilih satu topik di bidang TI yang diminati. Transformasikan melalui 5 tahap Problem Formation Model.
 
-**Topik awal:** ________________________________________
+**Topik awal:** Implementasi machine learning untuk rekrutmen dan prediksi turnover dalam MSDM
 
 | Tahap | Hasil |
 |-------|-------|
-| Reality | *Contoh: Aplikasi e-commerce sering ditinggalkan saat checkout* |
-| Observed Issue (Symptom) | *Contoh: Bounce rate checkout 68%* |
-| Diagnosed Problem (Root Cause) | |
-| Researchable Problem | |
-| Measurable Variable | |
+| Reality | Perusahaan membutuhkan keputusan MSDM yang cepat dan akurat, tetapi banyak proses HR masih manual. |
+| Observed Issue (Symptom) | Waktu screening CV lama, identifikasi risiko resign terlambat, dan keputusan HR tidak konsisten antar evaluator. |
+| Diagnosed Problem (Root Cause) | Data HR tersebar/tidak terstruktur, belum ada model prediksi yang tervalidasi, serta kontrol bias dan privasi belum terintegrasi. |
+| Researchable Problem | Pada konteks MSDM Indonesia, belum ada evaluasi terukur yang menunjukkan model ML dapat meningkatkan akurasi rekrutmen/turnover sekaligus menjaga fairness dan privasi. |
+| Measurable Variable | AUC/F1 prediksi turnover, waktu rata-rata screening CV, precision seleksi kandidat, demographic parity difference, dan jumlah temuan pelanggaran privasi. |
 
-**Apakah terjebak solution-first thinking?** [ ] Ya / [ ] Tidak
-> Jika ya, kembali ke tahap mana? ________________________
+**Apakah terjebak solution-first thinking?** [ ] Ya / [x] Tidak
+> Jika ya, kembali ke tahap mana? -
 
 ---
 
@@ -123,14 +123,14 @@ Gambarkan konteks sistem dari masalah riset di Latihan 1.
 
 | Komponen | Deskripsi |
 |----------|----------|
-| Input | *Contoh: Request HTTP dari browser pengguna* |
-| Process | |
-| Output | |
-| Outcome | |
-| Constraints | |
-| Stakeholders | |
+| Input | Data kandidat (CV, pengalaman, kompetensi), data historis karyawan (kinerja, absensi, mutasi, resign), dan kebijakan HR. |
+| Process | Pembersihan dan integrasi data HR, pelatihan model ML, validasi model, evaluasi fairness, lalu penyajian rekomendasi untuk HRD. |
+| Output | Skor kecocokan kandidat, prediksi risiko turnover, serta rekomendasi intervensi retensi/pelatihan. |
+| Outcome | Efisiensi proses HR meningkat, keputusan lebih berbasis data, dan potensi turnover dapat diintervensi lebih awal. |
+| Constraints | Data tidak lengkap, isu privasi dan keamanan, potensi bias algoritma, biaya infrastruktur/SDM data, dan resistensi budaya organisasi. |
+| Stakeholders | HRD, manajer unit, karyawan, kandidat, tim data/IT, direksi, serta unit kepatuhan/hukum. |
 
-**Komponen mana yang paling relevan dengan masalah riset?** _______________
+**Komponen mana yang paling relevan dengan masalah riset?** Process dan Constraints
 
 ---
 
@@ -140,17 +140,16 @@ Evaluasi problem statement yang sudah dibuat menggunakan 5 kriteria.
 
 | Kriteria | Skor (1-5) | Justifikasi |
 |----------|-----------|-------------|
-| Clarity | *Contoh: 4 — cukup jelas tapi perlu spesifikasi dataset* | |
-| Measurability | | |
-| Relevance | | |
-| Testability | | |
-| Impact | | |
+| Clarity | 5 | Problem statement sudah menyebut domain, konteks, gap, dan batasan evaluasi. |
+| Measurability | 5 | Variabel operasional jelas: AUC/F1, waktu screening, metrik fairness, dan indikator privasi. |
+| Relevance | 5 | Isu efisiensi, bias, dan privasi pada HR berbasis ML sangat relevan dengan transformasi digital MSDM. |
+| Testability | 4 | Hipotesis dapat diuji empiris, namun hasil sangat bergantung pada kualitas dan kelengkapan data organisasi. |
+| Impact | 5 | Hasil riset berpotensi langsung memperbaiki kualitas keputusan HR dan tata kelola AI di organisasi. |
 
-**Skor total:** _____ / 25
+**Skor total:** 24 / 25
 
 **Problem statement versi final (1 paragraf):**
-> ___________________________________________________
-> ___________________________________________________
+> Implementasi machine learning pada MSDM menjanjikan efisiensi dan akurasi dalam rekrutmen serta prediksi turnover, tetapi organisasi masih menghadapi kualitas data yang rendah, risiko bias algoritma, dan tantangan privasi. Problem riset yang diajukan adalah belum adanya bukti terukur pada konteks MSDM Indonesia mengenai kemampuan model ML untuk meningkatkan kualitas keputusan HR tanpa mengorbankan fairness dan kepatuhan data. Penelitian karena itu perlu mengevaluasi model secara simultan pada aspek akurasi, efisiensi proses, fairness, dan privasi agar kontribusi teknologi dapat diadopsi secara bertanggung jawab.
 
 ---
 
@@ -159,5 +158,5 @@ Evaluasi problem statement yang sudah dibuat menggunakan 5 kriteria.
 > Bandingkan "masalah" yang biasa ditemui saat coding (bug, error) dengan masalah riset. Apa perbedaan fundamental dalam cara mendefinisikan dan mendekati keduanya?
 
 **Jawaban:**
-> ___________________________________________________
-> ___________________________________________________
+> Masalah saat coding biasanya bersifat deterministik: ada perilaku yang diharapkan, ada gejala error, lalu diperbaiki sampai sistem kembali benar. Fokusnya adalah penyelesaian cepat terhadap penyebab teknis yang spesifik.
+> Masalah riset bersifat epistemik: yang dicari adalah gap pengetahuan yang belum terjawab, sehingga perlu definisi variabel, batasan konteks, hipotesis yang bisa diuji, dan bukti yang dapat direplikasi. Jadi, pendekatannya bukan hanya “memperbaiki”, tetapi “membuktikan” dengan metode yang terukur.
