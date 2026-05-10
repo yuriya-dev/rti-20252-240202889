@@ -67,25 +67,25 @@ Jika variabel tidak bisa di-map ke komponen apapun → arsitektur perlu didesain
 ```
 SYSTEM-EXPERIMENT MAPPING
 
-Research Question: ____________________
+Research Question: Apakah LSTM menghasilkan MAE dan RMSE lebih rendah serta R2 lebih tinggi dibanding baseline XGBoost pada dataset harga penutupan harian saham BBRI (2015-2025) dari Investing.com/Yahoo Finance?
 
 Variable → Component Mapping:
 | Variabel | Tipe | Komponen Sistem | Cara Manipulasi/Pengukuran |
 |----------|------|-----------------|---------------------------|
-|          | IV   |                 |                           |
-|          | DV   |                 |                           |
-|          | CV   |                 |                           |
+| Jenis model (LSTM vs XGBoost) | IV   | Modul model | Ganti `model_type` di config dan jalankan pipeline pelatihan | 
+| Akurasi prediksi harga saham | DV   | Modul evaluasi metrik | Hitung RMSE, MAE, R2, MAPE pada test set dan simpan ke report |
+| Dataset dan konfigurasi tetap | CV   | Data loader + preprocessing | Kunci dataset BBRI 2015-2025, split 80/20, window 30, MinMax, seed 42 |
 
 4 Prinsip Desain:
-  [ ] Traceability — Setiap komponen bisa ditelusuri ke variabel
-  [ ] Variable Isolation — IV bisa diubah tanpa mengubah CV
-  [ ] Measurement Integration — Pengukuran DV built-in
-  [ ] Reproducibility — Setup bisa direkonstruksi
+  [x] Traceability — Setiap komponen bisa ditelusuri ke variabel
+  [x] Variable Isolation — IV bisa diubah tanpa mengubah CV
+  [x] Measurement Integration — Pengukuran DV built-in
+  [x] Reproducibility — Setup bisa direkonstruksi
 
 Experimental Setup:
-  Input data     : ____________________
-  Parameter      : ____________________
-  Output format  : ____________________
+  Input data     : Harga penutupan harian BBRI 2015-2025 (OHLCV jika tersedia)
+  Parameter      : Split 80/20, window size 30, MinMax scaling, seed 42
+  Output format  : Tabel metrik (RMSE/MAE/R2/MAPE), plot prediksi vs aktual, log konfigurasi
 ```
 
 ---
@@ -94,16 +94,16 @@ Experimental Setup:
 
 Gunakan RQ dan variabel dari WS-05. Petakan ke komponen sistem.
 
-**RQ:** __________________________________________________
+**RQ:** Apakah LSTM menghasilkan MAE dan RMSE lebih rendah serta R2 lebih tinggi dibanding baseline XGBoost pada dataset harga penutupan harian saham BBRI (2015-2025) dari Investing.com/Yahoo Finance?
 
 | Variabel | Tipe | Komponen Sistem | Cara Manipulasi / Pengukuran |
 |----------|------|-----------------|---------------------------|
-| *Contoh: Jenis model* | *IV* | *Modul classifier (swap RF ↔ CNN)* | *Ganti config `model_type`* |
-| | DV | | |
-| | CV | | |
+| Jenis model | IV | Modul model (swap LSTM <-> XGBoost) | Ganti config `model_type` |
+| Akurasi prediksi | DV | Modul evaluasi metrik | Hitung RMSE/MAE/R2/MAPE pada test set |
+| Konfigurasi eksperimen | CV | Data loader + preprocessing | Kunci dataset, split, window, scaler, seed |
 
-**Apakah semua variabel bisa di-map?** [ ] Ya / [ ] Tidak
-> Jika tidak, komponen apa yang perlu ditambahkan? _________
+**Apakah semua variabel bisa di-map?** [x] Ya / [ ] Tidak
+> Jika tidak, komponen apa yang perlu ditambahkan? N/A
 
 ---
 
@@ -113,14 +113,14 @@ Evaluasi desain sistem terhadap 4 prinsip.
 
 | Prinsip | Status | Bukti / Penjelasan |
 |---------|--------|-------------------|
-| Traceability | *Contoh: ✅ — setiap modul punya label variabel* | |
-| Modularity | | |
-| Controllability | | |
-| Measurability | | |
+| Traceability | Ya | Setiap modul (data, model, evaluasi) ditautkan ke variabel riset |
+| Modularity | Ya | Model LSTM/XGBoost dapat ditukar tanpa mengubah preprocessing |
+| Controllability | Ya | Semua CV dikunci di config dan dicatat di log |
+| Measurability | Ya | Metrik dihitung otomatis dan diekspor |
 
-**Prinsip mana yang paling sulit dipenuhi?** _______________
+**Prinsip mana yang paling sulit dipenuhi?** Controllability
 **Strategi untuk mengatasinya:**
-> ___________________________________________________
+> Kunci semua CV di config, log versi library, dan gunakan split kronologis yang konsisten.
 
 ---
 
@@ -130,14 +130,14 @@ Jika sistem memiliki 3 komponen utama, rencanakan ablation study.
 
 | Kondisi | Komponen A | Komponen B | Komponen C | Hasil yang Diharapkan |
 |---------|-----------|-----------|-----------|----------------------|
-| Full | *Contoh: ✅ CNN* | *Contoh: ✅ Temporal features* | *Contoh: ✅ Z-score norm* | *Baseline penuh* |
-| – A | ❌ (ganti RF) | ✅ | ✅ | |
-| – B | ✅ | ❌ (tanpa temporal) | ✅ | |
-| – C | ✅ | ✅ | ❌ (tanpa normalisasi) | |
+| Full | ON indikator teknikal | ON windowing sequence | ON MinMax scaling | Baseline penuh |
+| – A | OFF (tanpa indikator) | ON | ON | Error naik, terutama pada XGBoost |
+| – B | ON | OFF (tanpa windowing) | ON | LSTM kehilangan pola temporal, error naik |
+| – C | ON | ON | OFF (tanpa scaling) | Training LSTM tidak stabil, error naik |
 
-**Komponen mana yang diprediksi paling berkontribusi?** _____
+**Komponen mana yang diprediksi paling berkontribusi?** Komponen B (windowing sequence)
 **Mengapa?**
-> ___________________________________________________
+> Windowing memberi konteks temporal yang diperlukan LSTM untuk belajar pola deret waktu.
 
 ---
 
@@ -146,5 +146,5 @@ Jika sistem memiliki 3 komponen utama, rencanakan ablation study.
 > Apa risiko jika sistem dibangun seperti produk (monolitik, fitur lengkap) lalu baru dilakukan eksperimen? Mengapa arsitektur modular penting untuk riset?
 
 **Jawaban:**
-> ___________________________________________________
-> ___________________________________________________
+> Sistem monolitik sulit mengisolasi variabel, sehingga perubahan kecil bisa memengaruhi banyak komponen.
+> Arsitektur modular penting agar IV bisa diubah tanpa mengganggu CV dan pengukuran DV tetap konsisten.
