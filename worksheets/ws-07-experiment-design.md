@@ -68,36 +68,36 @@ Ancaman validitas harus diidentifikasi **sebelum** eksperimen dan mitigasinya di
 ```
 EXPERIMENT DESIGN
 
-Research Question : ____________________
-Hypothesis        : ____________________
-Tipe Eksperimen   : [ ] Comparison  [ ] Ablation  [ ] Parameter
+Research Question : Apakah LSTM menghasilkan MAE dan RMSE lebih rendah serta R2 lebih tinggi dibanding baseline XGBoost pada dataset harga penutupan harian saham BBRI (2015-2025) dari Investing.com/Yahoo Finance?
+Hypothesis        : H0: Tidak ada perbedaan signifikan MAE/RMSE dan R2 antara LSTM dan XGBoost. H1: LSTM memiliki MAE/RMSE lebih rendah dan R2 lebih tinggi dibanding XGBoost.
+Tipe Eksperimen   : [x] Comparison  [ ] Ablation  [ ] Parameter
 
 Kondisi Eksperimen:
 | Kondisi | Deskripsi | IV Value | CV Settings |
 |---------|-----------|----------|-------------|
-| Control |           |          |             |
-| Treatment |         |          |             |
+| Control | XGBoost baseline | XGBoost | Dataset BBRI 2015-2025, split 80/20, window 30, MinMax, seed 42 |
+| Treatment | LSTM model | LSTM | Dataset BBRI 2015-2025, split 80/20, window 30, MinMax, seed 42 |
 
 Fairness Checklist:
-  [ ] Dataset identik untuk semua kondisi
-  [ ] Preprocessing setara
-  [ ] Tuning effort setara
-  [ ] Environment identik
-  [ ] Metrik evaluasi sama
+  [x] Dataset identik untuk semua kondisi
+  [x] Preprocessing setara
+  [x] Tuning effort setara
+  [x] Environment identik
+  [x] Metrik evaluasi sama
 
 Threat Analysis:
 | Threat Type | Ancaman Spesifik | Mitigasi |
 |-------------|-----------------|----------|
-| Internal    |                 |          |
-| External    |                 |          |
-| Construct   |                 |          |
-| Conclusion  |                 |          |
+| Internal    | Data leakage akibat split time series yang salah | Gunakan split kronologis dan walk-forward validation |
+| External    | Hanya satu emiten (BBRI) dan periode tertentu | Nyatakan batasan; uji tambahan pada emiten lain jika tersedia |
+| Construct   | Metrik error tidak menangkap manfaat trading | Tambahkan directional accuracy sebagai metrik eksploratif |
+| Conclusion  | Variansi tinggi dan non-stationary | Gunakan bootstrap pada error dan laporkan interval kepercayaan |
 
 Statistical Plan:
-  Uji statistik   : ____________________
-  Justifikasi      : ____________________
-  Alpha            : ____________________
-  Effect size min  : ____________________
+  Uji statistik   : Diebold-Mariano atau Wilcoxon signed-rank pada error berpasangan
+  Justifikasi      : Menguji perbedaan akurasi forecast pada pasangan error yang identik
+  Alpha            : 0.05
+  Effect size min  : Penurunan MAE/RMSE >= 5% atau delta R2 >= 0.02
 ```
 
 ---
@@ -106,13 +106,13 @@ Statistical Plan:
 
 Susun desain eksperimen berdasarkan RQ, variabel, dan sistem dari WS-04 sampai WS-06.
 
-**RQ:** __________________________________________________
-**Tipe eksperimen:** [ ] Comparison / [ ] Ablation / [ ] Parameter
+**RQ:** Apakah LSTM menghasilkan MAE dan RMSE lebih rendah serta R2 lebih tinggi dibanding baseline XGBoost pada dataset harga penutupan harian saham BBRI (2015-2025) dari Investing.com/Yahoo Finance?
+**Tipe eksperimen:** [x] Comparison / [ ] Ablation / [ ] Parameter
 
 | Kondisi | Deskripsi | IV Value | CV Settings |
 |---------|-----------|----------|-------------|
-| Control | *Contoh: RF baseline dari literatur* | *RF* | *Dataset X, 80:20 split, seed 42* |
-| Treatment | | | |
+| Control | XGBoost baseline | XGBoost | Dataset BBRI 2015-2025, split 80/20, window 30, MinMax, seed 42 |
+| Treatment | LSTM model | LSTM | Dataset BBRI 2015-2025, split 80/20, window 30, MinMax, seed 42 |
 
 ---
 
@@ -122,14 +122,14 @@ Evaluasi apakah desain eksperimen di Latihan 1 sudah fair.
 
 | Kriteria | Status | Detail |
 |----------|--------|--------|
-| Dataset identik | *Contoh: ✅ — sama-sama pakai CIC-MalMem-2022* | |
-| Preprocessing setara | | |
-| Tuning effort setara | | |
-| Environment identik | | |
-| Metrik evaluasi sama | | |
+| Dataset identik | Ya | Sama-sama pakai BBRI 2015-2025 |
+| Preprocessing setara | Ya | MinMax, window 30, split kronologis |
+| Tuning effort setara | Ya | Grid search sederhana pada kedua model |
+| Environment identik | Ya | Hardware dan library versi sama |
+| Metrik evaluasi sama | Ya | RMSE, MAE, R2, MAPE |
 
-**Ada yang tidak fair?** [ ] Ya / [ ] Tidak
-> Jika ya, bagaimana cara memperbaikinya? ________________
+**Ada yang tidak fair?** [ ] Ya / [x] Tidak
+> Jika ya, bagaimana cara memperbaikinya? N/A
 
 ---
 
@@ -139,14 +139,14 @@ Identifikasi ancaman validitas untuk desain eksperimen ini.
 
 | Threat Type | Ancaman Spesifik | Mitigasi |
 |-------------|-----------------|----------|
-| Internal | *Contoh: Data leakage antara train-test* | *Contoh: Gunakan stratified split, validasi tidak ada overlap* |
-| External | | |
-| Construct | | |
-| Conclusion | | |
+| Internal | Data leakage karena windowing tidak kronologis | Gunakan split kronologis dan cek overlap | 
+| External | Hanya satu emiten, pasar Indonesia | Tambah emiten lain atau sebut sebagai batasan | 
+| Construct | Metrik error tidak mencerminkan profit | Tambahkan directional accuracy sebagai metrik eksploratif |
+| Conclusion | Sample test kecil dan data volatil | Gunakan bootstrap, laporkan CI |
 
-**Ancaman mana yang paling sulit dimitigasi?** _____________
+**Ancaman mana yang paling sulit dimitigasi?** External validity
 **Mengapa?**
-> ___________________________________________________
+> Generalisasi ke emiten lain sulit tanpa data multi-saham dan periode berbeda.
 
 ---
 
@@ -155,6 +155,6 @@ Identifikasi ancaman validitas untuk desain eksperimen ini.
 > Sebuah paper melaporkan "metode kami mengalahkan semua baseline." Apa 3 pertanyaan pertama yang harus diajukan untuk mengevaluasi klaim ini?
 
 **Jawaban:**
-1. ___________________________________________________
-2. ___________________________________________________
-3. ___________________________________________________
+1. Apakah dataset, preprocessing, dan split identik untuk semua baseline?
+2. Apakah tuning effort dan budget komputasi setara untuk tiap metode?
+3. Apakah metrik dan uji statistik sesuai dengan tujuan prediksi?
