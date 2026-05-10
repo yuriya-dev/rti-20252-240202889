@@ -66,19 +66,19 @@ Metrik harus ditentukan **sebelum** eksperimen. Memilih metrik setelah melihat d
 ```
 VARIABLE & METRIC DEFINITION
 
-Research Question: ____________________
+Research Question: Apakah LSTM menghasilkan MAE dan RMSE lebih rendah serta R2 lebih tinggi dibanding baseline XGBoost pada dataset harga penutupan harian saham BBRI (2015-2025) dari Investing.com/Yahoo Finance?
 
 | Variabel | Tipe | Konsep | Metrik | Skala | Satuan | Cara Mengukur | Justifikasi |
 |----------|------|--------|--------|-------|--------|---------------|-------------|
-|          | IV   |        |        |       |        |               |             |
-|          | DV   |        |        |       |        |               |             |
-|          | CV   |        |        |       |        |               |             |
+| Jenis model (LSTM vs XGBoost) | IV   | Metode prediksi time series | Kategori model | Nominal | - | Set `model_type` di config eksperimen | RQ perbandingan dua model; sejalan dengan studi komparatif di paper/ws-03 (Alkayes & Sugihartono 2025; Aprilia et al. 2026). |
+| Akurasi prediksi harga saham | DV   | Error prediksi dan goodness-of-fit | RMSE, MAE (primary), R2 dan MAPE (secondary) | Ratio | Rupiah, %, unitless | Hitung error antara y_pred dan y_true pada test set | Metrik ini umum di literatur prediksi saham (Alkayes & Sugihartono 2025; Rosyd et al. 2024; Aprilia et al. 2026). |
+| Dataset dan konfigurasi tetap | CV   | Kondisi eksperimen konstan | Split ratio, window size, scaler, seed | Nominal/Ratio | - | Dicatat di config/log dan diverifikasi ulang | Mengisolasi pengaruh model, mencegah bias perbandingan. |
 
 Alignment Check:
   RQ → Concept → Variable → Metric → Data → Result
-  [ ] Setiap langkah terdokumentasi
-  [ ] Tidak ada "lompatan logis"
-  [ ] Metrik mengukur apa yang dimaksud (construct validity)
+  [x] Setiap langkah terdokumentasi
+  [x] Tidak ada "lompatan logis"
+  [x] Metrik mengukur apa yang dimaksud (construct validity)
 ```
 
 ---
@@ -87,16 +87,16 @@ Alignment Check:
 
 Gunakan RQ dari WS-04. Definisikan variabel dan metriknya.
 
-**RQ:** __________________________________________________
+**RQ:** Apakah LSTM menghasilkan MAE dan RMSE lebih rendah serta R2 lebih tinggi dibanding baseline XGBoost pada dataset harga penutupan harian saham BBRI (2015-2025) dari Investing.com/Yahoo Finance?
 
 | Variabel | Tipe | Konsep Abstrak | Metrik Konkret | Skala (NOIR) | Satuan |
 |----------|------|---------------|----------------|-------------|--------|
-| *Contoh: Jenis model* | *IV* | *Pendekatan klasifikasi* | *Categorical: CNN vs RF* | *Nominal* | *—* |
-| | DV | | | | |
-| | CV | | | | |
+| Jenis model | IV | Algoritma prediksi time series | LSTM vs XGBoost | Nominal | - |
+| Akurasi prediksi harga saham | DV | Error prediksi | RMSE, MAE, R2, MAPE | Ratio | Rupiah, %, unitless |
+| Konfigurasi eksperimen | CV | Kondisi tetap | Split 80/20, window 30, MinMax, seed 42 | Nominal/Ratio | - |
 
-**Apakah ada lompatan logis dalam rantai?** [ ] Ya / [ ] Tidak
-> Jika ya, di mana? ____________________________________
+**Apakah ada lompatan logis dalam rantai?** [ ] Ya / [x] Tidak
+> Jika ya, di mana? N/A
 
 ---
 
@@ -106,15 +106,15 @@ Evaluasi metrik DV yang dipilih di Latihan 1 menggunakan 3 kriteria.
 
 | Kriteria | Skor (1-5) | Justifikasi |
 |----------|-----------|-------------|
-| Representative | *Contoh: 4 — F1-Score mewakili keseimbangan precision-recall* | |
-| Sensitive | | |
-| Feasible | | |
+| Representative | 5 — RMSE dan MAE langsung mengukur error prediksi harga | |
+| Sensitive | 4 — peka terhadap perbedaan model pada error | |
+| Feasible | 5 — perhitungan sederhana dari y_true vs y_pred | |
 
-**Apakah perlu secondary metric?** [ ] Ya / [ ] Tidak
-> Jika ya, apa dan mengapa? _____________________________
+**Apakah perlu secondary metric?** [x] Ya / [ ] Tidak
+> Jika ya, apa dan mengapa? R2 untuk goodness-of-fit dan MAPE untuk interpretasi error relatif.
 
 **Contoh kasus ceiling effect untuk metrik ini:**
-> ___________________________________________________
+> Jika harga saham stabil dan variasi kecil, RMSE/MAE menjadi sangat kecil untuk kedua model sehingga perbedaan nyaris tidak terlihat.
 
 ---
 
@@ -124,10 +124,10 @@ Bayangkan data yang akan dikumpulkan dari eksperimen. Evaluasi 4 dimensi kualita
 
 | Dimensi | Pertanyaan | Jawaban | Strategi Mitigasi |
 |---------|-----------|---------|------------------|
-| Completeness | *Apakah semua data point terkumpul?* | | |
-| Consistency | *Apakah ada kontradiksi internal?* | | |
-| Validity | *Apakah benar-benar mengukur yang dimaksud?* | | |
-| Representativeness | *Apakah sampel mewakili populasi target?* | | |
+| Completeness | *Apakah semua data point terkumpul?* | Ada missing value pada hari libur atau data tidak tercatat | Gunakan kalender perdagangan, isi missing dengan forward fill atau drop jika perlu, catat jumlah missing | |
+| Consistency | *Apakah ada kontradiksi internal?* | Potensi duplikasi tanggal atau urutan tidak kronologis | Sort by date, hapus duplikasi, verifikasi satuan mata uang | |
+| Validity | *Apakah benar-benar mengukur yang dimaksud?* | Outlier karena stock split atau anomali harga | Lakukan penyesuaian corporate action, cek outlier ekstrem | |
+| Representativeness | *Apakah sampel mewakili populasi target?* | Hanya satu emiten (BBRI) dan satu periode | Nyatakan batasan; jika memungkinkan tambah emiten lain sebagai studi lanjutan | |
 
 ---
 
@@ -136,5 +136,5 @@ Bayangkan data yang akan dikumpulkan dari eksperimen. Evaluasi 4 dimensi kualita
 > Mengapa memilih metrik setelah melihat data dianggap p-hacking? Apa bedanya dengan eksplorasi data yang sah?
 
 **Jawaban:**
-> ___________________________________________________
-> ___________________________________________________
+> Memilih metrik setelah melihat data meningkatkan risiko p-hacking karena metrik dipilih agar hasil terlihat signifikan.
+> Eksplorasi data sah jika dilaporkan sebagai exploratory dan tidak digunakan untuk mengonfirmasi hipotesis utama yang sudah dipre-registrasi.
