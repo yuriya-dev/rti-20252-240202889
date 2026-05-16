@@ -67,23 +67,23 @@ Masalah riset yang layak harus memenuhi 5 kriteria:
 PROBLEM STATEMENT BUILDER
 
 Domain & Konteks
-  Domain   : Manajemen Sumber Daya Manusia (MSDM) berbasis data
-  Konteks  : Implementasi machine learning untuk rekrutmen dan prediksi turnover pada organisasi di Indonesia
+  Domain   : Analitik Finansial dan Prediksi Harga Saham
+  Konteks  : Prediksi harga penutupan harian saham perbankan (BBRI) menggunakan machine learning
 
 System Context
-  Input       : Data CV kandidat, riwayat kinerja karyawan, absensi, data resign, dan kebijakan HR
-  Process     : Integrasi data HR, preprocessing, pelatihan model ML, evaluasi akurasi-fairness, dan rekomendasi keputusan HR
-  Output      : Skor kecocokan kandidat, prediksi risiko turnover, dan rekomendasi pelatihan/retensi
-  Outcome     : Proses HR lebih cepat, keputusan lebih akurat, dan retensi karyawan meningkat
-  Constraints : Kualitas data rendah/tidak terstruktur, privasi-keamanan data, bias algoritma, biaya implementasi, dan resistensi budaya
-  Stakeholders: Tim HRD, manajer lini, kandidat dan karyawan, tim IT/data, serta manajemen puncak
+  Input       : Data historis harga saham BBRI (OHLCV) periode 2015-2025 dari Investing.com/Yahoo Finance
+  Process     : Preprocessing (MinMax scaling, windowing), pelatihan model (LSTM vs XGBoost), prediksi time-series
+  Output      : Prediksi harga penutupan harian saham BBRI dan nilai error (RMSE, MAE, MAPE, R2)
+  Outcome     : Informasi prediksi yang akurat untuk mendukung pengambilan keputusan investasi
+  Constraints : Volatilitas pasar yang tinggi, pengaruh berita makroekonomi yang tidak ada dalam data historis
+  Stakeholders: Investor, analis keuangan, peneliti algoritma time-series
 
 Fenomena → Problem
-  Fenomena yang diamati             : Adopsi ML di MSDM meningkat karena dorongan efisiensi dan kebutuhan keputusan strategis
-  Gejala (symptom) yang terukur     : Screening CV dan analisis turnover memakan waktu lama, akurasi keputusan HR belum konsisten, serta risiko bias/privasi sering dilaporkan
-  Masalah yang didiagnosis          : Data HR belum siap analitik (tersebar dan tidak konsisten) serta belum ada evaluasi terpadu untuk kinerja model dan risiko etis
-  Masalah riset (researchable)      : Belum jelas seberapa besar ML meningkatkan akurasi prediksi turnover/rekrutmen pada konteks MSDM Indonesia tanpa memperburuk bias dan risiko privasi
-  Variabel yang terukur             : F1-score/AUC model, time-to-screening CV, tingkat turnover, demographic parity difference, dan jumlah insiden kepatuhan privasi
+  Fenomena yang diamati             : Fluktuasi harga saham BBRI sering kali tidak linear dan sulit diprediksi dengan metode statistik klasik
+  Gejala (symptom) yang terukur     : Error prediksi tinggi (RMSE/MAE besar) pada metode tradisional seperti regresi linear atau ARIMA saat menghadapi data saham yang volatil
+  Masalah yang didiagnosis          : Model tradisional gagal menangkap pola non-linear kompleks dan dependensi jangka panjang dalam data deret waktu saham
+  Masalah riset (researchable)      : Belum diketahui secara pasti apakah model deep learning (LSTM) secara konsisten menghasilkan error prediksi (MAE/RMSE) lebih rendah dibanding model ensemble yang kuat (XGBoost) pada data BBRI (2015-2025)
+  Variabel yang terukur             : Jenis model (LSTM vs XGBoost) sebagai variabel independen, serta RMSE, MAE, dan R2 sebagai variabel dependen
 
 Problem Quality Check
   [x] Clarity — Apakah satu orang membaca akan paham?
@@ -93,7 +93,7 @@ Problem Quality Check
   [x] Impact — Apakah ada kontribusi jika terjawab?
 
 Problem Statement (1 paragraf):
-  Berdasarkan temuan literatur pada implementasi machine learning di bidang MSDM, organisasi membutuhkan proses rekrutmen dan retensi yang lebih cepat serta akurat, namun masih menghadapi kendala kualitas data HR, bias algoritma, dan risiko privasi. Masalah riset yang dirumuskan adalah belum tersedianya evaluasi terukur pada konteks MSDM Indonesia untuk membuktikan apakah model machine learning benar-benar meningkatkan kualitas keputusan HR (misalnya prediksi turnover dan seleksi kandidat) sekaligus tetap adil dan patuh privasi. Oleh karena itu, penelitian perlu menguji kinerja model melalui metrik akurasi (F1/AUC), efisiensi proses (time-to-screening), serta metrik fairness dan kepatuhan data agar kontribusinya valid secara teknis dan etis.
+  Prediksi harga saham BBRI merupakan tantangan yang kompleks akibat tingginya volatilitas pasar dan pola data non-linear yang sulit dimodelkan oleh algoritma time-series klasik. Meskipun metode machine learning seperti XGBoost telah menunjukkan kinerja yang baik, model deep learning seperti Long Short-Term Memory (LSTM) secara teoritis lebih mampu menangkap pola dependensi jangka panjang. Namun, belum ada bukti konklusif mengenai mana yang lebih superior secara konsisten untuk data spesifik saham BBRI. Oleh karena itu, masalah riset yang dirumuskan adalah menguji perbandingan kinerja antara LSTM dan XGBoost pada dataset harga penutupan harian BBRI (2015-2025) untuk membuktikan model mana yang mampu memberikan tingkat error prediksi (MAE dan RMSE) lebih rendah serta goodness-of-fit (R2) yang lebih tinggi.
 ```
 
 ---
@@ -102,15 +102,15 @@ Problem Statement (1 paragraf):
 
 Pilih satu topik di bidang TI yang diminati. Transformasikan melalui 5 tahap Problem Formation Model.
 
-**Topik awal:** Implementasi machine learning untuk rekrutmen dan prediksi turnover dalam MSDM
+**Topik awal:** Prediksi harga saham BBRI menggunakan machine learning (LSTM vs XGBoost)
 
 | Tahap | Hasil |
 |-------|-------|
-| Reality | Perusahaan membutuhkan keputusan MSDM yang cepat dan akurat, tetapi banyak proses HR masih manual. |
-| Observed Issue (Symptom) | Waktu screening CV lama, identifikasi risiko resign terlambat, dan keputusan HR tidak konsisten antar evaluator. |
-| Diagnosed Problem (Root Cause) | Data HR tersebar/tidak terstruktur, belum ada model prediksi yang tervalidasi, serta kontrol bias dan privasi belum terintegrasi. |
-| Researchable Problem | Pada konteks MSDM Indonesia, belum ada evaluasi terukur yang menunjukkan model ML dapat meningkatkan akurasi rekrutmen/turnover sekaligus menjaga fairness dan privasi. |
-| Measurable Variable | AUC/F1 prediksi turnover, waktu rata-rata screening CV, precision seleksi kandidat, demographic parity difference, dan jumlah temuan pelanggaran privasi. |
+| Reality | Investor membutuhkan prediksi harga saham yang akurat untuk pengambilan keputusan, namun pergerakan harga BBRI sangat fluktuatif. |
+| Observed Issue (Symptom) | Prediksi sering meleset jauh dari harga aktual saat menggunakan metode analisis teknikal atau statistik tradisional. |
+| Diagnosed Problem (Root Cause) | Metode tradisional tidak mampu memodelkan pola non-linear dan hubungan sekuensial jangka panjang pada data deret waktu finansial. |
+| Researchable Problem | Belum diketahui secara pasti sejauh mana penurunan error (RMSE/MAE) yang bisa dicapai jika menggunakan LSTM dibandingkan baseline model populer XGBoost pada saham BBRI (2015-2025). |
+| Measurable Variable | Jenis model (LSTM vs XGBoost) dan error prediksi (RMSE, MAE, R2). |
 
 **Apakah terjebak solution-first thinking?** [ ] Ya / [x] Tidak
 > Jika ya, kembali ke tahap mana? -
@@ -123,14 +123,14 @@ Gambarkan konteks sistem dari masalah riset di Latihan 1.
 
 | Komponen | Deskripsi |
 |----------|----------|
-| Input | Data kandidat (CV, pengalaman, kompetensi), data historis karyawan (kinerja, absensi, mutasi, resign), dan kebijakan HR. |
-| Process | Pembersihan dan integrasi data HR, pelatihan model ML, validasi model, evaluasi fairness, lalu penyajian rekomendasi untuk HRD. |
-| Output | Skor kecocokan kandidat, prediksi risiko turnover, serta rekomendasi intervensi retensi/pelatihan. |
-| Outcome | Efisiensi proses HR meningkat, keputusan lebih berbasis data, dan potensi turnover dapat diintervensi lebih awal. |
-| Constraints | Data tidak lengkap, isu privasi dan keamanan, potensi bias algoritma, biaya infrastruktur/SDM data, dan resistensi budaya organisasi. |
-| Stakeholders | HRD, manajer unit, karyawan, kandidat, tim data/IT, direksi, serta unit kepatuhan/hukum. |
+| Input | Data sekunder harga historis BBRI (Open, High, Low, Close, Volume) 2015-2025 dari Yahoo Finance. |
+| Process | Pembersihan data, normalisasi (MinMax), pembentukan sequence (windowing), training LSTM/XGBoost, dan komparasi hasil. |
+| Output | Nilai prediksi harga saham dan perhitungan metrik evaluasi (RMSE, MAE, R2). |
+| Outcome | Evaluasi model terbaik yang dapat direkomendasikan sebagai sistem peringatan/prediksi pendukung investasi. |
+| Constraints | Volatilitas tinggi, kondisi pasar makro (inflasi, krisis) tidak dimodelkan, batasan komputasi training LSTM. |
+| Stakeholders | Investor ritel/institusi, analis pasar modal, peneliti time-series forecasting. |
 
-**Komponen mana yang paling relevan dengan masalah riset?** Process dan Constraints
+**Komponen mana yang paling relevan dengan masalah riset?** Process dan Output
 
 ---
 
@@ -140,16 +140,16 @@ Evaluasi problem statement yang sudah dibuat menggunakan 5 kriteria.
 
 | Kriteria | Skor (1-5) | Justifikasi |
 |----------|-----------|-------------|
-| Clarity | 5 | Problem statement sudah menyebut domain, konteks, gap, dan batasan evaluasi. |
-| Measurability | 5 | Variabel operasional jelas: AUC/F1, waktu screening, metrik fairness, dan indikator privasi. |
-| Relevance | 5 | Isu efisiensi, bias, dan privasi pada HR berbasis ML sangat relevan dengan transformasi digital MSDM. |
-| Testability | 4 | Hipotesis dapat diuji empiris, namun hasil sangat bergantung pada kualitas dan kelengkapan data organisasi. |
-| Impact | 5 | Hasil riset berpotensi langsung memperbaiki kualitas keputusan HR dan tata kelola AI di organisasi. |
+| Clarity | 5 | Masalah dinyatakan dengan jelas dengan komparasi dua metode spesifik pada dataset spesifik. |
+| Measurability | 5 | Variabel terukur menggunakan metrik standar regresi (RMSE, MAE, R2). |
+| Relevance | 5 | Prediksi harga saham bank terbesar di Indonesia sangat relevan untuk komunitas keuangan dan riset AI. |
+| Testability | 5 | Eksperimen mudah direplikasi dengan membagi train/test set secara kronologis dan menghitung error. |
+| Impact | 4 | Berkontribusi memberikan bukti empiris perbandingan arsitektur time-series modern pada kasus pasar lokal. |
 
 **Skor total:** 24 / 25
 
 **Problem statement versi final (1 paragraf):**
-> Implementasi machine learning pada MSDM menjanjikan efisiensi dan akurasi dalam rekrutmen serta prediksi turnover, tetapi organisasi masih menghadapi kualitas data yang rendah, risiko bias algoritma, dan tantangan privasi. Problem riset yang diajukan adalah belum adanya bukti terukur pada konteks MSDM Indonesia mengenai kemampuan model ML untuk meningkatkan kualitas keputusan HR tanpa mengorbankan fairness dan kepatuhan data. Penelitian karena itu perlu mengevaluasi model secara simultan pada aspek akurasi, efisiensi proses, fairness, dan privasi agar kontribusi teknologi dapat diadopsi secara bertanggung jawab.
+> Prediksi harga saham BBRI di pasar modal Indonesia masih menantang karena dinamika fluktuasinya yang kompleks dan non-linear, sehingga sering kali model tradisional menghasilkan error prediksi yang besar. Problem riset yang diajukan adalah menguji keunggulan Long Short-Term Memory (LSTM) dalam menangkap dependensi data waktu jangka panjang dibandingkan dengan baseline kuat eXtreme Gradient Boosting (XGBoost). Melalui eksperimen menggunakan data historis harian periode 2015-2025, penelitian ini akan membuktikan metode manakah yang secara konsisten memberikan nilai MAE dan RMSE yang lebih rendah, serta R2 yang lebih tinggi, sehingga dapat menjadi rekomendasi ilmiah bagi pengembangan sistem prediksi pasar modal lokal.
 
 ---
 

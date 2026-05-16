@@ -60,9 +60,9 @@ Membandingkan deep learning 2024 dengan decision tree sederhana tanpa justifikas
 
 LITERATURE MAPPING
 
-Topik      : Implementasi machine learning untuk rekrutmen dan prediksi turnover pada MSDM Indonesia (rujukan WS-02)
+Topik      : Perbandingan metode LSTM dan XGBoost untuk prediksi harga saham (rujukan WS-02)
 Database   : Google Scholar + referensi internal folder paper/ws-03
-Query      : ("machine learning" OR "classification" OR "time series") AND ("prediction" OR "detection") AND ("Indonesia" OR "dataset")
+Query      : ("machine learning" OR "deep learning" OR "time series") AND ("LSTM" OR "XGBoost") AND ("stock prediction" OR "harga saham")
 Tahun      : 2023-2026
 Hasil awal : 10 paper -> Screening -> 10 paper final
 
@@ -84,25 +84,25 @@ Literature Matrix (concept-centric):
 Pola yang ditemukan:
   Metode dominan     : LSTM, XGBoost/RF, dan pendekatan hybrid LSTM-XGBoost dengan skema komparatif + tuning.
   Dataset umum       : Mayoritas data deret waktu domain-spesifik (finansial/ekonomi), ditambah klasifikasi domain kesehatan-audio-siber.
-  Limitasi berulang  : Overfitting dan ketidakstabilan lintas data, generalisasi rendah antar konteks, serta minim evaluasi fairness-privacy.
+  Limitasi berulang  : Overfitting dan ketidakstabilan lintas data, generalisasi rendah antar emiten saham yang berbeda.
 
 GAP IDENTIFICATION
 
 Gap 1: [Jenis: method + context]
-  Deskripsi    : Belum ada kerangka evaluasi model ML yang simultan menilai akurasi, fairness, dan privasi untuk keputusan HR di Indonesia.
-  Bukti        : Sepuluh paper berfokus pada akurasi/error teknis; tidak ada yang melaporkan metrik fairness (mis. demographic parity/equal opportunity) maupun kepatuhan privasi data personal.
-  Signifikansi : Keputusan rekrutmen/turnover berdampak langsung pada manusia; model akurat tapi bias atau melanggar privasi tidak layak diterapkan.
+  Deskripsi    : Belum ada konsensus apakah LSTM selalu lebih unggul dari XGBoost pada prediksi harga saham spesifik seperti BBRI dengan volatilitas pasar lokal.
+  Bukti        : Beberapa studi menunjukkan LSTM unggul (Alkayes, Ulya), namun studi lain menunjukkan model tunggal bisa gagal (Kevin et al.) dan butuh hybrid. XGBoost seringkali sangat kompetitif namun kurang dieksplorasi secara mendalam dengan parameter yang setara.
+  Signifikansi : Pemilihan algoritma yang tepat sangat krusial untuk meminimalkan risiko kerugian investasi, sehingga komparasi yang adil pada konteks lokal sangat dibutuhkan.
 
 Gap 2: [Jenis: data + performance]
-  Deskripsi    : Belum tersedia bukti performa model yang stabil pada dataset HR Indonesia yang representatif dan tidak seimbang.
-  Bukti        : Kinerja berubah tajam antar studi: K-NN hanya 63% (audio), NB 85% vs RF 97% (phishing), LSTM gagal berat pada satu studi nilai tukar (MAPE 60.793; R2 negatif) tetapi unggul pada studi lain.
-  Signifikansi : Tanpa data HR lokal yang kuat, hasil eksperimen sulit digeneralisasi ke kebijakan SDM organisasi Indonesia.
+  Deskripsi    : Evaluasi yang dilakukan seringkali hanya pada satu kondisi pasar tanpa analisis komparatif performa error (RMSE/MAE) yang detail.
+  Bukti        : Kinerja berubah tajam antar studi, LSTM bisa gagal berat pada dataset tertentu (mis. nilai tukar dengan R2 rendah) tetapi sangat baik pada saham tertentu.
+  Signifikansi : Bukti komparatif spesifik pada emiten blue-chip lokal seperti BBRI (2015-2025) diperlukan sebagai landasan rekomendasi.
 
 Baseline Selection:
 | Baseline | Relevansi | Representatif | Source |
 |----------|-----------|---------------|--------|
-| Random Forest + feature engineering tabular | Cocok untuk klasifikasi data terstruktur (profil kandidat/riwayat karyawan) | Muncul di banyak studi dan konsisten kuat pada klasifikasi | Wardhana et al. (2023); Fauzan et al. (2025) |
-| Hybrid LSTM-XGBoost time series | Cocok untuk dinamika temporal turnover + koreksi residual non-linear | Berkinerja terbaik pada beberapa studi runtun waktu kompleks | Aprilia et al. (2026); Kevin et al. (2025) |
+| XGBoost Regression | Cocok untuk baseline model prediksi time-series dengan kemampuan menangani hubungan non-linear | Sering dijadikan pembanding yang tangguh pada studi prediksi finansial | Ulya et al. (2025); Alkayes & Sugihartono (2025) |
+| LSTM Regression | Merupakan state-of-the-art untuk data berurutan (sequence) dan time-series | Mendominasi literatur modern untuk prediksi harga saham | Aprilia et al. (2026); Rosyd et al. (2024) |
 
 ---
 
@@ -110,8 +110,8 @@ Baseline Selection:
 
 Gunakan topik riset dari WS-02. Cari minimal 5 paper relevan menggunakan Google Scholar atau database lain.
 
-**Topik riset:** Implementasi machine learning untuk rekrutmen dan prediksi turnover dalam MSDM Indonesia
-**Query pencarian:** ("machine learning" OR "random forest" OR "LSTM") AND ("recruitment" OR "turnover prediction" OR "classification") AND ("fairness" OR "privacy" OR "Indonesia")
+**Topik riset:** Prediksi harga saham BBRI menggunakan machine learning (LSTM vs XGBoost)
+**Query pencarian:** ("machine learning" OR "XGBoost" OR "LSTM") AND ("stock price" OR "prediksi saham" OR "time series regression") AND ("BBRI" OR "Indonesia")
 **Database:** Google Scholar + referensi paper/ws-03
 
 | # | Study | Tahun | Method | Dataset | Result | Limitasi |
@@ -128,7 +128,7 @@ Gunakan topik riset dari WS-02. Cari minimal 5 paper relevan menggunakan Google 
 | 10 | Indriyanti & Fajriah | 2025 | LSTM vs XGBoost | Radiasi matahari per jam Jakarta-Bogor 2013-2022 | LSTM menunjukkan error lebih rendah dibanding XGBoost | Ringkasan metrik tidak sepenuhnya konsisten antar bagian |
 
 **Pola yang terlihat — Metode dominan:** LSTM, XGBoost/RF, dan hybrid LSTM-XGBoost dalam eksperimen komparatif.
-**Limitasi yang berulang:** Overfitting/instabilitas lintas dataset, domain sangat spesifik, serta belum ada fairness-privacy assessment.
+**Limitasi yang berulang:** Overfitting/instabilitas lintas dataset, kurangnya pengujian komprehensif pada berbagai kondisi pasar, dan evaluasi sering terbatas pada satu saham saja.
 
 ---
 
@@ -138,14 +138,14 @@ Berdasarkan tabel di Latihan 1, identifikasi gap.
 
 | Jenis Gap | Ditemukan? | Gap Statement |
 |-----------|-----------|---------------|
-| Performance Gap | [x] Ya / [ ] Tidak | Performa model sangat sensitif terhadap domain; ada kasus model tunggal gagal (mis. R2 negatif pada beberapa eksperimen), namun unggul di studi lain. |
-| Method Gap | [x] Ya / [ ] Tidak | Studi dominan optimasi akurasi/error, belum mengintegrasikan evaluasi fairness, bias, dan privasi untuk keputusan berisiko tinggi seperti HR. |
-| Data Gap | [x] Ya / [ ] Tidak | Belum ada dataset HR Indonesia yang representatif untuk menguji recruitment-turnover sekaligus mengukur fairness/privacy. |
-| Context Gap | [x] Ya / [ ] Tidak | Referensi kini mencakup kesehatan, audio, siber, finansial, nilai tukar, dan energi, namun tetap belum spesifik pada konteks organisasi HR Indonesia. |
+| Performance Gap | [x] Ya / [ ] Tidak | Performa model sangat sensitif terhadap dataset; ada kasus model deep learning gagal (mis. R2 rendah), namun sangat superior di studi lain. Belum ada model tunggal yang secara absolut memenangkan semua skenario prediksi saham. |
+| Method Gap | [x] Ya / [ ] Tidak | Banyak penelitian membandingkan LSTM dan XGBoost, namun jarang yang melakukan tuning parameter secara adil dan komprehensif untuk keduanya secara bersamaan. |
+| Data Gap | [x] Ya / [ ] Tidak | Terdapat variasi besar dalam performa model yang sama ketika diuji pada saham dengan kapitalisasi pasar dan volatilitas yang berbeda (mis. BBCA vs aset kripto). |
+| Context Gap | [x] Ya / [ ] Tidak | Evaluasi komparatif spesifik pada saham blue-chip Indonesia (seperti BBRI) dalam rentang waktu yang sangat panjang (2015-2025) masih jarang dibahas secara mendalam. |
 
-**Gap utama yang dipilih:** Kombinasi Method Gap + Context Gap (didukung Data Gap)
+**Gap utama yang dipilih:** Kombinasi Context Gap + Performance Gap
 **Mengapa gap ini penting (bukan sekadar "belum ada yang meneliti")?**
-> Karena model untuk keputusan SDM tidak cukup hanya akurat. Model juga harus adil antar kelompok, patuh privasi data personal, dan tervalidasi pada konteks organisasi Indonesia agar keputusan rekrutmen/retensi tidak menimbulkan risiko etis, hukum, dan operasional.
+> Karena untuk memberikan rekomendasi arsitektur prediksi kepada investor lokal, diperlukan bukti empiris yang spesifik pada karakteristik volatilitas pasar modal Indonesia (khususnya saham blue-chip seperti BBRI), serta perbandingan yang adil (fair comparison) antara model deep learning dan ensemble.
 
 ---
 
@@ -155,11 +155,11 @@ Pilih 2 baseline dari literatur yang sudah dibaca.
 
 | # | Baseline | Mengapa Relevan | Mengapa Representatif | Apakah SOTA? | Sumber |
 |---|----------|----------------|----------------------|-------------|--------|
-| 1 | Random Forest + engineered tabular features | Cocok untuk klasifikasi kandidat/risiko turnover dari fitur terstruktur HR | Sering muncul dan performanya konsisten kuat pada studi klasifikasi | Bukan SOTA mutlak, tapi baseline kuat dan jujur | Wardhana et al. (2023); Fauzan et al. (2025) |
-| 2 | Hybrid LSTM-XGBoost | Cocok untuk tren temporal turnover sekaligus koreksi residual non-linear | Berulang menunjukkan peningkatan atas model tunggal pada data runtun waktu kompleks | Relatif modern/kuat untuk time series, tetapi tetap perlu validasi domain HR | Aprilia et al. (2026); Kevin et al. (2025) |
+| 1 | XGBoost Regression | Cocok untuk baseline model prediksi time-series dengan kemampuan menangkap pola non-linear dari fitur sekuensial | Sangat populer dan sering menjadi pemenang dalam berbagai kompetisi tabular/time-series | SOTA untuk metode ensemble tree-based | Ulya et al. (2025); Alkayes & Sugihartono (2025) |
+| 2 | LSTM Standard | Cocok untuk memodelkan ketergantungan temporal jangka panjang pada data harga saham historis | Merupakan standar de-facto untuk deep learning time-series di banyak literatur finansial | SOTA klasik untuk deep learning sequence modeling | Aprilia et al. (2026); Rosyd et al. (2024) |
 
 **Apakah pemilihan baseline ini bisa dianggap straw man?** [ ] Ya / [x] Tidak
-> Justifikasi: Kedua baseline mewakili praktik kuat di literatur. RF adalah baseline klasik kompetitif pada data tabular, sedangkan hybrid LSTM-XGBoost merepresentasikan baseline temporal modern yang sering mengungguli model tunggal pada data dinamis.
+> Justifikasi: Kedua baseline adalah model yang sangat kuat. Membandingkan LSTM dengan XGBoost berarti membandingkan algoritma deep learning terbaik untuk time-series dengan algoritma machine learning ensemble terbaik, sehingga perbandingannya jujur dan kompetitif.
 
 ---
 

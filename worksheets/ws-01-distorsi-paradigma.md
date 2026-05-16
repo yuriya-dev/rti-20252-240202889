@@ -62,16 +62,16 @@ Tanggal          : 11 April 2026
 
 2. Posisi paradigma:
    - Pendekatan: [ ] Positivis  [ ] Interpretivis  [ ] Design Science  [x] Mixed
-   - Alasan: Studi membandingkan efektivitas metode secara terukur (positivis), namun juga relevan untuk perancangan praktik/metode implementasi di konteks nyata (design science).
+   - Alasan: Studi membandingkan akurasi prediksi metode secara terukur (positivis), namun juga relevan untuk perancangan arsitektur sistem prediksi (design science).
 
 3. Identifikasi distorsi:
-   - Asumsi tersembunyi: Metode yang paling sering dipakai otomatis paling efektif di semua konteks.
-   - Sumber bias potensial: Selection bias pada pemilihan paper (hanya 23 dari ribuan hasil awal), publication bias, dan perbedaan konteks antar studi kasus.
-   - Langkah mitigasi: Nyatakan kriteria seleksi secara transparan, pisahkan analisis frekuensi vs efektivitas, serta laporkan batas generalisasi.
+   - Asumsi tersembunyi: Model deep learning yang lebih kompleks (LSTM) otomatis lebih baik dari model machine learning tradisional (XGBoost) di semua kondisi.
+   - Sumber bias potensial: Selection bias pada periode data (misalnya hanya menguji saat tren bullish) dan data leakage saat split training/testing.
+   - Langkah mitigasi: Gunakan time-series cross-validation (walk-forward), setarakan tuning effort, dan laporkan batasan eksperimen.
 
 4. Komitmen etika:
-   - Data yang tidak akan dimanipulasi: Hasil studi yang tidak mendukung hipotesis, outlier, dan data yang menurunkan signifikansi.
-   - Batasan yang diakui sejak awal: Kajian hanya berbasis SLR pada periode dan sumber tertentu, sehingga tidak mewakili seluruh proyek TI.
+   - Data yang tidak akan dimanipulasi: Hasil metrik error (RMSE/MAE) yang tidak mendukung hipotesis, misalnya jika XGBoost mengungguli LSTM.
+   - Batasan yang diakui sejak awal: Kajian hanya diuji pada satu emiten (BBRI) periode 2015-2025, sehingga tidak dapat digeneralisasi untuk seluruh pasar saham.
 ```
 
 ---
@@ -81,22 +81,22 @@ Tanggal          : 11 April 2026
 Pilih satu paper riset di bidang TI yang mengklaim "metode X meningkatkan performa." Telusuri setiap tahap Research Trust Model.
 
 **Paper yang dipilih:**
-> Judul: ANALISIS PERBANDINGAN METODE MANAJEMEN PROYEK TI YANG PALING SERING DIGUNAKAN DI INDONESIA DAN LUAR NEGERI: A LITERATURE REVIEW
-> Penulis (Tahun): Afifa Witania dkk. (tahun tidak dicantumkan eksplisit pada naskah lampiran)
+> Judul: PREDIKSI HARGA SAHAM BBRI MENGGUNAKAN METODE LSTM DAN XGBOOST
+> Penulis (Tahun): Aprilia et al. (2026)
 
 | Tahap | Apa yang Dilakukan | Potensi Distorsi |
 |-------|-------------------|-----------------|
-| Reality → Data | Menentukan RQ, lalu mencari paper di Google Scholar dan DOAJ dengan kata kunci Agile, Scrum, Kanban, Waterfall, dan manajemen proyek. | Basis data terbatas pada dua sumber; kemungkinan studi relevan di sumber lain tidak terambil. |
-| Data → Processing | Melakukan eliminasi duplikat, seleksi rentang tahun, relevansi, lalu QA hingga tersisa 23 paper. | Selection bias tinggi karena penyaringan sangat ketat; studi yang tidak memenuhi indeks tertentu bisa terbuang walau relevan. |
-| Processing → Analysis | Mengekstrak metode, lokasi, tahun, dan simpulan tiap paper; menghitung frekuensi metode per wilayah. | Heterogenitas konteks studi kasus (jenis industri, skala proyek, kapabilitas tim) membuat perbandingan tidak sepenuhnya setara. |
-| Analysis → Inference | Menarik simpulan metode paling sering dan paling efektif untuk Indonesia vs luar negeri. | Risiko mencampur klaim frekuensi dengan efektivitas; hubungan kausal belum tentu terbukti. |
-| Inference → Knowledge | Menyajikan rekomendasi metode untuk praktik manajemen proyek TI. | Over-generalisasi karena bukti berasal dari sampel terbatas dan periode tertentu. |
+| Reality → Data | Mengumpulkan data historis harga saham BBRI dari Yahoo Finance. | Data yang hilang pada hari libur bursa tidak ditangani dengan benar, menyebabkan anomali harga. |
+| Data → Processing | Melakukan normalisasi MinMax dan membagi data training/testing. | Data leakage jika pembagian tidak kronologis (menggunakan data masa depan untuk training). |
+| Processing → Analysis | Melatih model LSTM dan XGBoost, lalu menghitung RMSE dan MAE. | Hyperparameter tuning pada LSTM dilakukan lebih ekstensif daripada XGBoost sehingga perbandingan tidak fair. |
+| Analysis → Inference | Menyimpulkan bahwa LSTM selalu lebih unggul dari XGBoost. | Mengabaikan faktor volatilitas pasar yang menyebabkan performa model berfluktuasi di periode tertentu. |
+| Inference → Knowledge | Merekomendasikan LSTM sebagai model mutlak untuk prediksi saham. | Over-generalisasi karena model hanya diuji pada satu saham tanpa memperhatikan aset lain. |
 
-**Distorsi paling besar di tahap:** Analysis -> Inference
+**Distorsi paling besar di tahap:** Processing -> Analysis
 
 **Dua distorsi spesifik yang teridentifikasi:**
-1. Selection bias: dari ribuan hasil awal hanya sedikit paper yang lolos, sehingga komposisi bukti bisa tidak representatif.
-2. Frequency-effectiveness conflation: metode yang paling sering muncul dianggap paling efektif tanpa pembuktian kausal yang kuat.
+1. Tuning effort tidak setara: Model LSTM dioptimasi secara maksimal sedangkan XGBoost hanya menggunakan parameter bawaan.
+2. Data leakage: Pembagian dataset dilakukan secara acak (random split) bukan kronologis (time-based split) pada data deret waktu.
 
 ---
 
@@ -117,16 +117,16 @@ Skenario: Seorang peneliti menemukan bahwa jika 3 data point outlier dihapus, ha
 
 ## Latihan 3 — Posisi Paradigma
 
-**Topik riset:** Perbandingan penggunaan dan efektivitas metode manajemen proyek TI (Agile, Scrum, Kanban, Waterfall, Hybrid) di Indonesia dan luar negeri.
+**Topik riset:** Perbandingan akurasi metode LSTM dan XGBoost untuk prediksi harga saham BBRI (2015-2025).
 
 | Kriteria | Positivis | Interpretivis | Design Science |
 |----------|-----------|---------------|----------------|
-| Kesesuaian dengan topik (1–5) | 4 | 2 | 3 |
-| Jenis data yang dikumpulkan | Data terukur: jumlah studi per metode, indikator keberhasilan proyek, perbandingan performa lintas studi. | Data naratif: wawancara praktisi, pengalaman tim, konteks budaya organisasi. | Data desain artefak/proses: rancangan kerangka metode, uji penerapan bertahap, umpan balik implementasi. |
-| Limitasi paradigma | Sulit mengontrol semua variabel konteks riil proyek TI; hasil bisa tampak objektif tetapi tetap dipengaruhi confounder. | Generalisasi rendah karena sangat kontekstual dan subjektif. | Fokus pada artefak dapat menggeser fokus dari pengujian klaim kausal yang ketat. |
+| Kesesuaian dengan topik (1–5) | 5 | 1 | 3 |
+| Jenis data yang dikumpulkan | Data terukur: metrik error (RMSE, MAE, R2), harga historis saham. | Data naratif: wawancara dengan trader, sentimen pasar subjektif. | Data desain artefak: rancangan arsitektur sistem prediksi harga saham. |
+| Limitasi paradigma | Kesulitan memodelkan kejadian tidak terduga (black swan events) yang mempengaruhi harga saham. | Tidak menghasilkan model prediksi kuantitatif yang bisa diuji akurasinya secara matematis. | Fokus pada pembuatan aplikasi/sistem, bisa mengabaikan pembuktian kausalitas antar variabel riset. |
 
 **Paradigma yang dipilih:** Positivis (diperkuat perspektif Design Science)
-**Alasan:** Topik utama menuntut pembandingan berbasis bukti terukur, tetapi rekomendasi praktik membutuhkan sudut pandang perancangan solusi yang dapat diterapkan di konteks proyek nyata.
+**Alasan:** Riset membandingkan performa dua algoritma secara empiris menggunakan metrik terukur, namun artefak sistem juga dibangun sebagai instrumen eksperimen.
 
 ---
 
