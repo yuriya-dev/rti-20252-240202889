@@ -1,4 +1,10 @@
-# Laporan Penelitian: Analisis Komparatif Performa Model LSTM, XGBoost, dan Hybrid Stacking dalam Prediksi Harga Saham BBRI (2015-2025)
+# Laporan Penelitian
+
+**Judul:** Analisis Komparatif Performa Model LSTM, XGBoost, dan Hybrid Stacking dalam Prediksi Harga Saham BBRI (2015-2025)
+
+**Peneliti:** Wahyu Tri Cahya
+**Target Publikasi:** Jurnal Riset Teknologi Informasi / Jurnal Ilmiah Sinta 2/3
+**Status Penelitian:** Selesai (Eksperimen 10x Run dan Draf Paper Jurnal Telah Rampung)
 
 ---
 

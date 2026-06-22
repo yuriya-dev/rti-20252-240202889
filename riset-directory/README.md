@@ -27,11 +27,11 @@ Detail lengkap topik & roadmap: [09-docs/rencana-penelitian.md](09-docs/rencana-
 
 ## Status Tahapan
 
-- [ ] **Tahap 1** — Pengumpulan & Preprocessing Data Saham BBRI — *Belum Mulai* ([detail](09-docs/tahap-1-pengumpulan-dan-preprocessing-data.md))
-- [ ] **Tahap 2** — Implementasi Baseline XGBoost — *Belum Mulai* ([detail](09-docs/tahap-2-implementasi-baseline-xgboost.md))
-- [ ] **Tahap 3** — Implementasi Model LSTM — *Belum Mulai* ([detail](09-docs/tahap-3-implementasi-lstm.md))
-- [ ] **Tahap 4** — Eksperimen & Evaluasi Kinerja — *Belum Mulai* ([detail](09-docs/tahap-4-eksperimen-dan-evaluasi.md))
-- [ ] **Tahap 5** — Draf Paper Jurnal — *Belum Mulai* ([detail](09-docs/tahap-5-draf-paper.md))
+- [x] **Tahap 1** — Pengumpulan & Preprocessing Data Saham BBRI — *Selesai* ([detail](09-docs/tahap-1-pengumpulan-dan-preprocessing-data.md))
+- [x] **Tahap 2** — Implementasi Baseline XGBoost — *Selesai* ([detail](09-docs/tahap-2-implementasi-baseline-xgboost.md))
+- [x] **Tahap 3** — Implementasi Model LSTM — *Selesai* ([detail](09-docs/tahap-3-implementasi-lstm.md))
+- [x] **Tahap 4** — Eksperimen & Evaluasi Kinerja — *Selesai* ([detail](09-docs/tahap-4-eksperimen-dan-evaluasi.md))
+- [x] **Tahap 5** — Draf Paper Jurnal — *Selesai* ([detail](09-docs/tahap-5-draf-paper.md))
 
 ## Laporan Penelitian
 
@@ -39,4 +39,4 @@ Laporan penelitian komprehensif (ringkasan eksekutif, metodologi per tahap, hasi
 
 ## Author
 
-[Nama Peneliti]
+Wahyu Tri Cahya
