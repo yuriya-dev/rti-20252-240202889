@@ -9,6 +9,7 @@
 | Stack | Python, TensorFlow/Keras, XGBoost, Pandas, NumPy, Scikit-learn, Yahoo Finance API / Investing.com |
 | Masalah | Fluktuasi harga saham BBRI tidak linear dan volatil sehingga sulit dimodelkan dengan metode analisis statistik tradisional |
 | Solusi | Komparasi model ensemble learning (XGBoost) dan deep learning (LSTM) untuk meminimalkan error prediksi (RMSE, MAE, R2) |
+| Setup Lingkungan | [setup-eksperimen.md](setup-eksperimen.md) |
 
 ## 2. Alur Kerja (Roadmap)
 

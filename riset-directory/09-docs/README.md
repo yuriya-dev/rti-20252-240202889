@@ -5,6 +5,7 @@ Dokumen perencanaan & panduan kerja penelitian.
 ## Isi
 
 - [rencana-penelitian.md](rencana-penelitian.md) — **indeks utama**, ringkasan topik & roadmap 5 tahap
+- [setup-eksperimen.md](setup-eksperimen.md) — Dokumentasi setup lingkungan eksperimen & keterulangan (reproducibility)
 - [tahap-1-pengumpulan-dan-preprocessing-data.md](tahap-1-pengumpulan-dan-preprocessing-data.md) — Rencana pengumpulan & preprocessing data saham BBRI (Belum Mulai)
 - [tahap-2-implementasi-baseline-xgboost.md](tahap-2-implementasi-baseline-xgboost.md) — Rencana implementasi model baseline XGBoost (Belum Mulai)
 - [tahap-3-implementasi-lstm.md](tahap-3-implementasi-lstm.md) — Rencana implementasi model deep learning LSTM (Belum Mulai)

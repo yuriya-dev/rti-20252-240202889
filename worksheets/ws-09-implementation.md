@@ -63,32 +63,36 @@ Capai **repeatability** dulu, baru **reproducibility**.
 EXPERIMENT SETUP DOCUMENTATION
 
 Hardware:
-  CPU     : ____________________
-  RAM     : ____________________
-  GPU     : ____________________
-  Storage : ____________________
+  CPU     : Apple M2 (8 Cores)
+  RAM     : 16 GB
+  GPU     : Apple M2 (Integrated)
+  Storage : SSD
 
 Software:
-  OS        : ____________________
-  Runtime   : ____________________
-  Framework : ____________________
+  OS        : macOS 26.5.1
+  Runtime   : Python 3.9.6
+  Framework : TensorFlow 2.20.0, Keras 3.10.0, XGBoost 2.1.4
 
 Dependencies:
 | Library | Version | Sumber | Hash/Checksum |
 |---------|---------|--------|---------------|
-|         |         |        |               |
-|         |         |        |               |
+| tensorflow | 2.20.0 | PyPI | - |
+| xgboost | 2.1.4 | PyPI | - |
+| scikit-learn | 1.6.1 | PyPI | - |
+| pandas | 2.3.3 | PyPI | - |
+| numpy | 2.0.2 | PyPI | - |
+| yfinance | 0.2.66 | PyPI | - |
 
 Konfigurasi:
-  Config file     : ____________________
-  Random seed     : ____________________
-  Hyperparameters : ____________________
+  Config file     : riset-directory/05-kode/config.json
+  Random seed     : 42
+  Hyperparameters : LSTM (units: 50/100, dropout: 0.2, learning_rate: 0.001); XGBoost (max_depth: 3/5/7, learning_rate: 0.05, n_estimators: 100/500)
 
 Reproducibility Check:
-  [ ] Dependency terdokumentasi (requirements.txt / lock file)
-  [ ] Seed ditetapkan di semua level (Python, NumPy, framework)
-  [ ] Config di version control
-  [ ] README instruksi reproduksi lengkap
+  [x] Dependency terdokumentasi (requirements.txt / lock file)
+  [x] Seed ditetapkan di semua level (Python, NumPy, framework)
+  [x] Config di version control
+  [x] README instruksi reproduksi lengkap
 ```
 
 ---
@@ -99,23 +103,24 @@ Dokumentasikan environment untuk eksperimen Anda (boleh environment saat ini ata
 
 | Komponen | Spesifikasi |
 |----------|------------|
-| CPU | *Contoh: Intel Core i7-12700H, 14 Core* |
-| RAM | *Contoh: 32 GB DDR5* |
-| GPU | *Contoh: NVIDIA RTX 3060 6GB / CPU-only jika tidak ada GPU* |
-| OS | *Contoh: Ubuntu 22.04 LTS / Windows 11* |
-| Runtime | |
-| Framework | |
-| Random Seed | |
+| CPU | Apple M2 (8 Cores) |
+| RAM | 16 GB |
+| GPU | Apple M2 Integrated |
+| OS | macOS 26.5.1 |
+| Runtime | Python 3.9.6 |
+| Framework | TensorFlow 2.20.0, Keras 3.10.0, XGBoost 2.1.4 |
+| Random Seed | 42 |
 
 **Dependencies (minimal 5):**
 
 | Library | Version | Alasan Dibutuhkan |
 |---------|---------|-------------------|
-| *Contoh: scikit-learn* | *1.3.2* | *Klasifikasi + evaluasi metrik* |
-| | | |
-| | | |
-| | | |
-| | | |
+| tensorflow | 2.20.0 | Pembuatan dan pelatihan model deep learning LSTM |
+| xgboost | 2.1.4 | Pembuatan dan pelatihan model baseline XGBoost |
+| scikit-learn | 1.6.1 | Pembagian dataset, pencarian hyperparameter, dan perhitungan metrik evaluasi (RMSE, MAE, R2) |
+| pandas | 2.3.3 | Manipulasi dan analisis data runtun waktu (time-series) harga saham |
+| numpy | 2.0.2 | Operasi aljabar linier dan transformasi array / matriks data |
+| yfinance | 0.2.66 | Mengunduh data historis harga saham BBRI (OHLCV) secara otomatis |
 
 ---
 
@@ -125,18 +130,18 @@ Rancang tes repeatability sederhana: jalankan kode yang sama 3× di environment 
 
 | Run | Seed | Metrik Utama | Hasil Sama? |
 |-----|------|-------------|-------------|
-| 1 | *Contoh: 42* | *Contoh: Accuracy* | — |
-| 2 | | | [ ] Ya / [ ] Tidak |
-| 3 | | | [ ] Ya / [ ] Tidak |
+| 1 | 42 | RMSE (regresi) | — |
+| 2 | 42 | RMSE (regresi) | [x] Ya / [ ] Tidak |
+| 3 | 42 | RMSE (regresi) | [x] Ya / [ ] Tidak |
 
 **Jika hasil berbeda, kemungkinan penyebab:**
-> ___________________________________________________
+> Keberadaan sifat non-deterministik pada operasi GPU/CPU di TensorFlow/Keras jika variabel lingkungan `TF_DETERMINISTIC_OPS=1` tidak disetel, atau terjadi perbedaan inisialisasi bobot acak jika seed tidak dikunci pada level Python, NumPy, dan TensorFlow secara bersamaan.
 
 **Checklist kontrol yang sudah diterapkan:**
-- [ ] Random seed di-set di semua level
-- [ ] Tidak ada background process yang mengganggu
-- [ ] Cache dibersihkan antar-run
-- [ ] Config file yang sama untuk semua run
+- [x] Random seed di-set di semua level (Python, NumPy, TensorFlow)
+- [x] Tidak ada background process yang mengganggu
+- [x] Cache dibersihkan antar-run
+- [x] Config file yang sama untuk semua run
 
 ---
 
@@ -145,25 +150,44 @@ Rancang tes repeatability sederhana: jalankan kode yang sama 3× di environment 
 Tulis README minimum untuk eksperimen Anda (6 komponen wajib).
 
 ```
-# Judul Eksperimen: ____________________
+# Judul Eksperimen: Prediksi Harga Saham BBRI Menggunakan LSTM vs XGBoost
 
 ## 1. Environment
-> (Salin spesifikasi dari Latihan 1)
+- CPU: Apple M2 (8 Cores)
+- RAM: 16 GB
+- OS: macOS 26.5.1
+- Runtime: Python 3.9.6
+- Framework: TensorFlow 2.20.0, XGBoost 2.1.4
 
 ## 2. Installation
-> (Langkah instalasi, misal: "pip install -r requirements.txt")
+Langkah instalasi:
+```bash
+pip install tensorflow==2.20.0 xgboost==2.1.4 scikit-learn==1.6.1 pandas==2.3.3 numpy==2.0.2 yfinance==0.2.66 matplotlib==3.9.4
+```
 
 ## 3. Data
-> (Deskripsi data: sumber, format, ukuran)
+- Sumber: Yahoo Finance API (BBRI.JK)
+- Format: CSV (OHLCV)
+- Ukuran: ~2.500 baris (data harian dari tahun 2015 s.d. 2025)
 
 ## 4. Execution
-> (Command untuk menjalankan eksperimen)
+Jalankan pipeline pengujian:
+```bash
+python 05-kode/evaluate.py
+```
 
 ## 5. Configuration
-> (File config yang digunakan + parameter kunci)
+File konfigurasi: `05-kode/config.json`
+Parameter kunci:
+- Random Seed: 42
+- Window Size: 30 hari
+- Split Ratio: 80% train, 20% test
 
 ## 6. Expected Output
-> (Contoh output yang diharapkan + format)
+1. Output metrik evaluasi (RMSE, MAE, R2) dalam terminal atau file CSV:
+   - Model XGBoost: RMSE ~200, MAE ~150, R2 ~0.90
+   - Model LSTM: RMSE ~150, MAE ~120, R2 ~0.93
+2. Gambar grafik perbandingan harga aktual vs prediksi di `06-output/figures/prediction_vs_actual.png`.
 ```
 
 ---
@@ -172,6 +196,6 @@ Tulis README minimum untuk eksperimen Anda (6 komponen wajib).
 
 > Apakah eksperimen Anda saat ini bisa direproduksi oleh orang lain tanpa bantuan Anda? Komponen apa yang masih hilang?
 
-**Level saat ini:** [ ] Repeatability / [ ] Reproducibility / [ ] Belum keduanya
+**Level saat ini:** [x] Repeatability / [ ] Reproducibility / [ ] Belum keduanya
 **Komponen yang belum terdokumentasi:**
-> ___________________________________________________
+> File requirements.txt yang diekspor secara formal dan tersimpan di version control, serta konfigurasi environment khusus untuk memastikan determinisme pada Mac Silicon (M2 GPU/Metal acceleration).
