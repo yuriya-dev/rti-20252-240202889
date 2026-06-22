@@ -1,0 +1,4 @@
+Komparasi,Statistic,p-value,Kesimpulan
+LSTM vs XGBoost,34709.0,1.2362426707159649e-24,SIGNIFIKAN ✅
+Hybrid vs LSTM,35283.0,6.474799335467805e-24,SIGNIFIKAN ✅
+Hybrid vs XGBoost,68640.0,0.4794712896610386,Tidak Signifikan ❌

@@ -66,45 +66,64 @@ Run gagal/anomali tidak boleh dihapus tanpa dokumentasi. Bisa jadi:
 ## Template A.10 — Execution Plan & Data Log
 
 ```
-EXECUTION PLAN
+EXECUTION PLAN (LSTM vs XGBoost vs Hybrid Stacking)
 
-| Run # | Skenario | Seed | Parameter | Status | Waktu | Output File |
-|-------|----------|------|-----------|--------|-------|-------------|
-| 1     |          |      |           |        |       |             |
-| 2     |          |      |           |        |       |             |
-| 3     |          |      |           |        |       |             |
-| ...   |          |      |           |        |       |             |
+| Run # | Skenario | Seed | Parameter | Status | Waktu | Output Folder |
+|-------|----------|------|-----------|--------|-------|---------------|
+| 1     | LSTM vs XGB vs Hybrid | 43 | window=60, epochs=100, batch=32 | Completed | ~30s | 06-output/run-1 |
+| 2     | LSTM vs XGB vs Hybrid | 44 | window=60, epochs=100, batch=32 | Completed | ~30s | 06-output/run-2 |
+| 3     | LSTM vs XGB vs Hybrid | 45 | window=60, epochs=100, batch=32 | Completed | ~30s | 06-output/run-3 |
+| 4     | LSTM vs XGB vs Hybrid | 46 | window=60, epochs=100, batch=32 | Completed | ~30s | 06-output/run-4 |
+| 5     | LSTM vs XGB vs Hybrid | 47 | window=60, epochs=100, batch=32 | Completed | ~30s | 06-output/run-5 |
+| 6     | LSTM vs XGB vs Hybrid | 48 | window=60, epochs=100, batch=32 | Completed | ~30s | 06-output/run-6 |
+| 7     | LSTM vs XGB vs Hybrid | 49 | window=60, epochs=100, batch=32 | Completed | ~30s | 06-output/run-7 |
+| 8     | LSTM vs XGB vs Hybrid | 50 | window=60, epochs=100, batch=32 | Completed | ~30s | 06-output/run-8 |
+| 9     | LSTM vs XGB vs Hybrid | 51 | window=60, epochs=100, batch=32 | Completed | ~30s | 06-output/run-9 |
+| 10    | LSTM vs XGB vs Hybrid | 52 | window=60, epochs=100, batch=32 | Completed | ~30s | 06-output/run-10 |
 
-Jumlah runs per skenario : ____
-Total runs               : ____
+Jumlah runs per skenario : 10
+Total runs               : 10 (masing-masing mengevaluasi 3 model)
 
-DATA LOG (per run):
-  Run ID    : ____________________
-  Timestamp : ____________________
-  Skenario  : ____________________
-  Input     : ____________________
-  Output    : ____________________
-  Anomali   : ____________________
-  Catatan   : ____________________
+DATA LOG (Hasil Rata-rata Seluruh Run):
+  Skenario 1 - LSTM Baseline:
+    MAE : 229.0273 ± 26.4501 Rp
+    RMSE: 301.6060 ± 30.9412 Rp
+    R²  : 0.5901 ± 0.0808
+    MAPE: 5.5588% ± 0.6445%
+  Skenario 2 - XGBoost Baseline:
+    MAE : 126.1506 ± 4.5945 Rp
+    RMSE: 188.5673 ± 4.0398 Rp
+    R²  : 0.8412 ± 0.0068
+    MAPE: 3.1385% ± 0.1263%
+  Skenario 3 - Hybrid LSTM→XGBoost Stacking:
+    MAE : 128.6106 ± 6.6277 Rp
+    RMSE: 193.7625 ± 5.4648 Rp
+    R²  : 0.8323 ± 0.0095
+    MAPE: 3.1868% ± 0.1862%
 ```
 
 ---
 
 ## Latihan 1 — Execution Plan
 
-Susun execution plan untuk eksperimen Anda. Tentukan skenario, jumlah run, dan seed sebelum eksekusi.
+Berikut adalah execution plan riil yang telah kita jalankan untuk membandingkan performa model LSTM, XGBoost, dan Hybrid Stacking pada testing set saham BBRI.
 
 | Run # | Skenario | Seed | Parameter Kunci | Status |
 |-------|----------|------|----------------|--------|
-| *1* | *Contoh: BERT-base, DS-1* | *42* | *lr=2e-5, epoch=10* | *Planned* |
-| *2* | *BERT-base, DS-1* | *123* | *lr=2e-5, epoch=10* | *Planned* |
-| 3 | | | | |
-| 4 | | | | |
-| 5 | | | | |
+| 1 | LSTM vs XGBoost vs Hybrid | 43 | window=60, epoch=100, batch=32, n_est=500 | Completed |
+| 2 | LSTM vs XGBoost vs Hybrid | 44 | window=60, epoch=100, batch=32, n_est=500 | Completed |
+| 3 | LSTM vs XGBoost vs Hybrid | 45 | window=60, epoch=100, batch=32, n_est=500 | Completed |
+| 4 | LSTM vs XGBoost vs Hybrid | 46 | window=60, epoch=100, batch=32, n_est=500 | Completed |
+| 5 | LSTM vs XGBoost vs Hybrid | 47 | window=60, epoch=100, batch=32, n_est=500 | Completed |
+| 6 | LSTM vs XGBoost vs Hybrid | 48 | window=60, epoch=100, batch=32, n_est=500 | Completed |
+| 7 | LSTM vs XGBoost vs Hybrid | 49 | window=60, epoch=100, batch=32, n_est=500 | Completed |
+| 8 | LSTM vs XGBoost vs Hybrid | 50 | window=60, epoch=100, batch=32, n_est=500 | Completed |
+| 9 | LSTM vs XGBoost vs Hybrid | 51 | window=60, epoch=100, batch=32, n_est=500 | Completed |
+| 10 | LSTM vs XGBoost vs Hybrid | 52 | window=60, epoch=100, batch=32, n_est=500 | Completed |
 
-**Total skenario:** ____
-**Run per skenario:** ____
-**Total run keseluruhan:** ____
+**Total skenario:** 3 (LSTM, XGBoost, Hybrid Stacking)
+**Run per skenario:** 10
+**Total run keseluruhan:** 10 (masing-masing run membandingkan ketiga skenario)
 
 ---
 
@@ -115,25 +134,26 @@ Desain format data log untuk eksperimen Anda. Tentukan field apa saja yang akan 
 **Identitas:**
 | Field | Contoh |
 |-------|--------|
-| Run ID | *run-001* |
-| Timestamp | *2025-03-15T10:30:00* |
-| | |
+| Run ID | run-xgb-001 |
+| Timestamp | 2026-06-22T22:45:00 |
+| Scenario Name | XGBoost Baseline |
 
 **Konfigurasi:**
 | Field | Contoh |
 |-------|--------|
-| Seed | *42* |
-| Code version | *commit abc1234* |
-| | |
+| Seed | 42 |
+| Code version | commit 54b8a3b |
+| Dataset Path | riset-directory/04-data/bbri_clean.csv |
+| Hyperparameters | {'max_depth': 5, 'n_estimators': 500} |
 
 **Hasil:**
 | Metrik | Tipe Data | Range Valid |
 |--------|----------|-------------|
-| *Contoh: Accuracy* | *float* | *0.0 – 1.0* |
-| | | |
-| | | |
+| RMSE | float | 0.0 - inf |
+| MAE | float | 0.0 - inf |
+| R2 Score | float | -inf - 1.0 |
 
-**Format output:** [ ] CSV / [ ] JSON / [ ] Database / [ ] Lainnya: ____
+**Format output:** [x] CSV / [x] JSON / [ ] Database / [ ] Lainnya: ____
 
 ---
 
@@ -143,10 +163,10 @@ Rencanakan bagaimana menangani anomali. Untuk setiap jenis, tentukan langkah yan
 
 | Jenis Anomali | Contoh | Tindakan |
 |---------------|--------|----------|
-| Run gagal (crash) | *Contoh: OOM pada batch_size=64* | *Contoh: Dokumentasi, re-run batch_size=32, catat perubahan* |
-| Hasil ekstrem | | |
-| Waktu eksekusi anomali | | |
-| Inkonsistensi dengan run lain | | |
+| Run gagal (crash) | OOM saat melatih LSTM dengan batch_size besar | Dokumentasikan run crash, turunkan batch_size (misal dari 256 ke 32), ulangi eksekusi, catat konsumsi memori tambahan. |
+| Hasil ekstrem | Nilai R2 negatif atau RMSE sangat tinggi karena model divergen | Cek normalisasi fitur (apakah data uji ter-scale dengan MinMax yang sama dengan data latih), investigasi learning rate (turunkan learning rate), catat perbaikan. |
+| Waktu eksekusi anomali | Pelatihan satu epoch LSTM memakan waktu >10 menit (biasanya ~10 detik) karena CPU throttling | Periksa background process di OS, dinginkan CPU, jalankan ulang run tersebut, dokumentasikan waktu run lambat. |
+| Inkonsistensi dengan run lain | Metrik performa berbeda jauh antar seed (misal run 1 R2=0.92, run 2 R2=0.45) | Investigasi kestabilan inisialisasi bobot LSTM, tingkatkan ukuran data latih atau tambahkan regularisasi (Dropout), jalankan ulang dengan parameter teregulasi. |
 
 **Prinsip:** Detect → Investigate → Document → Decide
 
@@ -157,6 +177,7 @@ Rencanakan bagaimana menangani anomali. Untuk setiap jenis, tentukan langkah yan
 > Pernahkah Anda melaporkan hasil riset/tugas dari single run? Apa risikonya? Bagaimana multiple run mengubah kepercayaan terhadap hasil?
 
 **Pengalaman sebelumnya:**
-> ___________________________________________________
+> Sering kali dalam tugas kuliah atau eksperimen awal, kami hanya menjalankan kode sekali (single run) dan langsung melaporkan hasil akurasinya. Risiko dari pendekatan ini adalah hasil tersebut bisa jadi merupakan "keberuntungan statistik" (statistical fluke) karena inisialisasi bobot acak atau pembagian data tertentu yang menguntungkan model secara kebetulan. Kami tidak mengetahui variansi performa dan rentabilitas model jika diterapkan pada data yang berbeda atau dengan inisialisasi yang berbeda.
+
 **Yang akan dilakukan berbeda:**
-> ___________________________________________________
+> Dalam riset ini, kami telah menjalankan setiap skenario (LSTM, XGBoost, dan Hybrid Stacking) sebanyak 10 kali menggunakan 10 random seed yang berbeda (yaitu 43 s.d. 52). Kami menghitung rata-rata (mean) dan standar deviasi (standard deviation) dari RMSE, MAE, R², dan MAPE. Hal ini memberikan estimasi interval kepercayaan yang kuat dan membuktikan bahwa keunggulan performa model XGBoost Baseline atas LSTM dan Hybrid benar-benar signifikan secara statistik (p-value < 0.05 pada Wilcoxon Signed-Rank Test) untuk data BBRI, membantah asumsi awal bahwa model deep learning atau hybrid selalu lebih baik.

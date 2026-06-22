@@ -1,0 +1,7 @@
+{
+  "notebook_path": "BBRI_Stock_Prediction.ipynb",
+  "start_run": 1,
+  "end_run": 10,
+  "timeout_seconds": 900,
+  "kernel_name": "python3"
+}
