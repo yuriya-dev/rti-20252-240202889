@@ -4,12 +4,12 @@ Dokumen perencanaan & panduan kerja penelitian.
 
 ## Isi
 
-- [rencana-penelitian.md](rencana-penelitian.md) — **indeks utama**, ringkasan topik & roadmap 5 tahap
+- [rencana-penelitian.md](rencana-penelitian.md) — **indeks utama**, ringkasan topik & roadmap tahap penelitian
 - [setup-eksperimen.md](setup-eksperimen.md) — Dokumentasi setup lingkungan eksperimen & keterulangan (reproducibility)
-- [tahap-1-pengumpulan-dan-preprocessing-data.md](tahap-1-pengumpulan-dan-preprocessing-data.md) — Rencana pengumpulan & preprocessing data saham BBRI (Belum Mulai)
-- [tahap-2-implementasi-baseline-xgboost.md](tahap-2-implementasi-baseline-xgboost.md) — Rencana implementasi model baseline XGBoost (Belum Mulai)
-- [tahap-3-implementasi-lstm.md](tahap-3-implementasi-lstm.md) — Rencana implementasi model deep learning LSTM (Belum Mulai)
-- [tahap-4-eksperimen-dan-evaluasi.md](tahap-4-eksperimen-dan-evaluasi.md) — Rencana eksperimen & komparasi performa (Belum Mulai)
-- [tahap-5-draf-paper.md](tahap-5-draf-paper.md) — Rencana penulisan draf paper jurnal (Belum Mulai)
+- [tahap-1-pengumpulan-dan-preprocessing-data.md](tahap-1-pengumpulan-dan-preprocessing-data.md) — Pengumpulan & preprocessing data saham BBRI (**Selesai**)
+- [tahap-3-implementasi-lstm.md](tahap-3-implementasi-lstm.md) — Implementasi model deep learning LSTM (**Selesai**)
+- [tahap-4-eksperimen-dan-evaluasi.md](tahap-4-eksperimen-dan-evaluasi.md) — Eksperimen 10 run & komparasi performa LSTM vs XGBoost vs Hybrid (**Selesai**)
+- [tahap-5-draf-paper.md](tahap-5-draf-paper.md) — Penulisan draf paper jurnal (**Selesai**)
+- [tahap-6-penyajian-hasil.md](tahap-6-penyajian-hasil.md) — Rencana penyajian hasil & visualisasi (WS-12) (**Selesai**)
 
 Deliverable konkret tiap tahap (kode, data, hasil, naskah) disimpan di folder bernomor terkait (lihat [README utama](../README.md)).
